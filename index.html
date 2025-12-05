@@ -133,15 +133,15 @@
   <div id="noDataMsg" class="no-data">No users yet. Add one above.</div>
 
   <script>
-    // Simple data model: array of user objects { id: number, name: string, occupation: string }
+    // Simple data model: array of user object
     const STORAGE_KEY = "sortingTestUsers";
 
     let users = [];
     let nextId = 1;
 
     // Current sort settings
-    let sortField = "id";          // "id" | "name" | "occupation"
-    let sortAscending = true;      // true = ASC, false = DESC
+    let sortField = "id";         
+    let sortAscending = true;    
 
     // DOM references
     const userIdInput = document.getElementById("userId");
@@ -153,14 +153,13 @@
     const userTableBody = document.querySelector("#userTable tbody");
     const noDataMsg = document.getElementById("noDataMsg");
 
-    // Initialize on page load
+    // page load
     window.addEventListener("DOMContentLoaded", () => {
       loadFromStorage();
       updateUserIdTextbox();
       renderTable();
     });
 
-    // Add user on button click
     addUserBtn.addEventListener("click", () => {
       const name = userNameInput.value.trim();
       const occupation = userOccupationInput.value.trim();
@@ -185,20 +184,19 @@
       renderTable();
     });
 
-    // Sort field change
+    // Sort field
     sortFieldSelect.addEventListener("change", () => {
       sortField = sortFieldSelect.value;
       renderTable();
     });
 
-    // Toggle sort direction (ASC/DESC)
+    // Toggle direction
     sortDirectionBtn.addEventListener("click", () => {
       sortAscending = !sortAscending;
       sortDirectionBtn.textContent = sortAscending ? "▲" : "▼";
       renderTable();
     });
 
-    // Helpers
 
     function updateUserIdTextbox() {
       userIdInput.value = nextId;
@@ -211,7 +209,6 @@
     }
 
     function renderTable() {
-      // Clear current rows
       userTableBody.innerHTML = "";
 
       if (users.length === 0) {
@@ -221,10 +218,9 @@
         noDataMsg.style.display = "none";
       }
 
-      // Create a shallow copy so we do not mutate original order
       const sortedUsers = users.slice().sort(compareUsers);
 
-      // Build rows
+      // Rows
       for (const u of sortedUsers) {
         const tr = document.createElement("tr");
 
@@ -259,7 +255,6 @@
       return sortAscending ? comparison : -comparison;
     }
 
-    // Optional persistence using localStorage
     function saveToStorage() {
       const data = {
         users: users,
@@ -280,7 +275,6 @@
         if (typeof data.nextId === "number" && data.nextId > 0) {
           nextId = data.nextId;
         } else {
-          // If something is wrong, recompute nextId
           const maxId = users.reduce((max, u) => Math.max(max, u.id), 0);
           nextId = maxId + 1;
         }
@@ -291,3 +285,4 @@
   </script>
 </body>
 </html>
+
